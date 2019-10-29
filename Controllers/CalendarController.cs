@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
+using System.Collections.Generic;
+using static P01.NoteReader;
+
 
 namespace P01.Controllers
 {
@@ -10,9 +13,15 @@ namespace P01.Controllers
 
         public IActionResult Index()
         {
-            return  View();
+            ReadFiles();
+            var notebook = new Models.Notebook
+            {
+                allNotes = notes
+            };
+            
+            return  View(notebook.allNotes);
         }
-        [Route("/Calendar/Edit", Name = "Edit")]
+        [Route("/Calendar/Edit/", Name = "Edit")]
         public IActionResult Edit()
         {
             return  View();
@@ -24,12 +33,6 @@ namespace P01.Controllers
 
 
 
-        // 
-        // GET: /Calendar/Welcome/ 
-
-         public string Welcome()
-        {
-            return "This is the Welcome action method...";
-        }
+        
     }
 }

@@ -10,5 +10,8 @@ namespace P01.Models
         public String title {get;set;}
         public DateTime date {get;set;}
         public String category {get;set;}
+        public uint id{get;set;}
+        public String text {get;set;}
+        
     }
 }
