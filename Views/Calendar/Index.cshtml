@@ -56,7 +56,7 @@
                         @Html.DisplayFor(modelItem => printableDate) 
                     </td>
                     <td>@Html.DisplayFor(modelItem => note.title)
-                        <a asp-controller="Calendar" asp-action="Edit" type = "button" class="btn btn-default">Edit</a>
+                     <a asp-action="Edit" asp-route-id= "@note.id" class="btn btn-default">Edit</a>
                         <button type = "button" class="btn btn-default">Delete</button>
                     </td>
                 </tr>

@@ -21,10 +21,10 @@ namespace P01.Controllers
             
             return  View(notebook.allNotes);
         }
-        [Route("/Calendar/Edit/", Name = "Edit")]
-        public IActionResult Edit()
+      //  [Route("/Calendar/Edit/", Name = "Edit")]
+        public IActionResult Edit(uint ID)
         {
-            return  View();
+            return  View(notes.Find(note => note.id == ID));
         }
         public IActionResult New()
         {

@@ -1,3 +1,5 @@
+@model P01.Models.Note
+
 <div class = "well">
 
     <form>
@@ -5,7 +7,7 @@
             <div class ="col-sm-1"> Title of the note </div>
             <div class ="col-sm-9">
                 
-                    <input type = "text" style = "width:500px" name = "title">
+                    <input type = "text" style = "width:500px" name = "title" value = "@Model.title">
                 
             </div>
             <div class ="col-sm-2">
@@ -14,10 +16,10 @@
                 
             </div>
         </div>
-         <textarea name="message" style="width:1000px; height:400px;"></textarea> 
+         <textarea name="message" style="width:1000px; height:400px;">@Model.text </textarea> 
         <div class = "row">
             <div class = "col-sm-1">
-                <div class="dropdown">Category <br>
+                <div class="dropdown">@Model.category <br>
                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">

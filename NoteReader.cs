@@ -17,6 +17,7 @@ namespace P01
         public static void ReadFiles()
         {
             
+            notes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
             uint fileCounter = 0;
             foreach(string name in fileNames)

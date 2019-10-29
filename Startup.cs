@@ -43,7 +43,7 @@ namespace P01
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Calendar}/{action=Index}/{id?}");
-                routes.MapRoute("Edit","Calendar/{action=Edit}/",new {controller = "Calendar"});
+                //routes.MapRoute("Edit","Calendar/{action=Edit}/",new {controller = "Calendar"});
             });
         }
     }
