@@ -2,7 +2,7 @@
 
 <div class = "well">
 
-    <form>
+    <form asp-action="SubmitChanges" asp-controller="Calendar" asp-route-id=@Model.id method="POSTS">
         <div class = "row">
             <div class ="col-sm-1"> Title of the note </div>
             <div class ="col-sm-9">
@@ -12,7 +12,7 @@
             </div>
             <div class ="col-sm-2">
                 
-                    <input type="checkbox" name="markdown" value="markdown"> Markdown
+                 <!--   <input type="checkbox" name="markdown" value="markdown"> Markdown-->
                 
             </div>
         </div>
@@ -29,7 +29,7 @@
             </div>
             
             <div class = "col-sm-3 col-sm-offset-6"> Category:
-                <input type = "text" name = "category">
+                <input type = "text" name = "category" value ="@Model.category">
                 <button type="button" class="btn btn-default">Add New</button>
             </div>
             
@@ -37,9 +37,10 @@
         <hr/>
         <input type="submit" value="Submit">
         <input type="reset">
-        <a asp-controller="Calendar" asp-action="Index" type = "button" class="btn btn-default">Cancel</a>
-
     </form>
+    <a asp-controller="Calendar" asp-action="Index" type = "button" class="btn btn-default">Cancel</a>
+
+    
         
 
 

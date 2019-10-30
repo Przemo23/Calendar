@@ -7,7 +7,7 @@ namespace P01
 
 {
     public static class NoteReader{
-       private static string dirName;
+       public static string dirName;
        public static List<Note> notes;
         static NoteReader()
         {
@@ -19,7 +19,7 @@ namespace P01
             
             notes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
-            uint fileCounter = 0;
+            int fileCounter = 0;
             foreach(string name in fileNames)
             {
                 
