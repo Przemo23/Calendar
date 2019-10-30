@@ -37,16 +37,25 @@ namespace P01.Controllers
             return  View("Edit",notes.Find(note => note.id == notes.Count -1));
         }
         
-        public IActionResult SubmitChanges(int id, String title,String text,DateTime date,String category)
+        public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category)
         {
             Note modifiedNote = notes.Find(note => note.id == id);
             string path = Path.Combine(dirName,modifiedNote.title);
+            text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (System.IO.File.Exists(path))
                 System.IO.File.WriteAllText(path,text);
             else
                 System.IO.File.WriteAllText(Path.Combine(dirName,title),text);
              
             
+            return View("Index",ReadAllNotes().allNotes);
+        }
+
+        public IActionResult DeleteFile(int id)
+        {
+            Note modifiedNote = notes.Find(note => note.id == id);
+            string path = Path.Combine(dirName,modifiedNote.title);
+            System.IO.File.Delete(path);
             return View("Index",ReadAllNotes().allNotes);
         }
 

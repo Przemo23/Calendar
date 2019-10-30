@@ -57,7 +57,7 @@
                     </td>
                     <td>@Html.DisplayFor(modelItem => note.title)
                      <a asp-action="Edit" asp-route-id= "@note.id" class="btn btn-default">Edit</a>
-                        <button type = "button" class="btn btn-default">Delete</button>
+                     <a asp-action="DeleteFile" asp-route-id= "@note.id" class="btn btn-default">Delete</a>
                     </td>
                 </tr>
                 }
