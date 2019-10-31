@@ -1,7 +1,9 @@
 @{
     String currentDate = DateTime.Now.ToString("MM/dd/yyyy");
     String maxDate = "12/12/2077";
+    int numberOfPages = Model.Count/10 + 1;
 }
+@model List<P01.Models.Note>;
 
  <div class = "well">
             <div class = "row">
@@ -44,19 +46,21 @@
                 </tr>
                 </thead>
                 <tbody>
+                @foreach(var note in Model)
+                {
                 <tr>
-                    <td>29.10.2019</td>
-                    <td>Zjedz kanapke</td>
-                   
+                    @{
+                    string printableDate =  note.date.Date.ToString("d");
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => printableDate) 
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => note.title)
+                     <a asp-action="Edit" asp-route-id= "@note.id" class="btn btn-default">Edit</a>
+                     <a asp-action="DeleteFile" asp-route-id= "@note.id" class="btn btn-default">Delete</a>
+                    </td>
                 </tr>
-                <tr>
-                    <td>30.10.2019</td>
-                    <td>Wyslij La</td>
-                </tr>
-                <tr>
-                    <td>26.11.2019</td>
-                    <td>RamPamPam</td>
-                </tr>
+                }
                 </tbody>
             </table>
 
@@ -66,14 +70,12 @@
                 <div class="col-sm-6">
                     <div class="btn-group">
                     <a asp-controller="Calendar" asp-action="New" type = "button" class="btn btn-default">New</a>
-                    <a asp-controller="Calendar" asp-action="Edit" type = "button" class="btn btn-default">Edit</a>
-                    <button type = "button" class="btn btn-default">Delete</button>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <button type = "button" class="btn btn-default">Prev Page</button>
                 </div>
-                <div class ="col-sm-2"> Page:<span></span></div>
+                <div class ="col-sm-2"> Page: @numberOfPages </div>
                 <div class="col-sm-2">
                     <button type = "button" class="btn btn-default">Next Page</button>
                 </div>
