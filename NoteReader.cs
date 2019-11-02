@@ -61,10 +61,29 @@ namespace P01
                     curNote.id = fileCounter;
                     curNote.title = name.Substring(name.LastIndexOf('/')+1);
                     fileCounter++;
-                    notes.Add(curNote);
+                    addInDateOrder(curNote);
                 }
                 file.Close();
             }
+        }
+        private static void addInDateOrder(Note curNote)
+        {
+            if(notes.Count == 0)
+            {
+                notes.Add(curNote);
+                return;
+            }
+
+            foreach(Note note in notes )
+            {
+                if(DateTime.Compare(curNote.date,note.date) <= 0)
+                {    
+                    notes.Insert(note.id,curNote);
+                    return;
+                }
+            }
+            notes.Add(curNote);
+            
         }
     }
 }

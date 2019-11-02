@@ -58,6 +58,25 @@ namespace P01.Controllers
             System.IO.File.Delete(path);
             return View("Index",ReadAllNotes().allNotes);
         }
+ 
+        public IActionResult Filter(DateTime from, DateTime to, string category)
+        {
+            
+            if(DateTime.Compare(from,to) > 0)
+                return View("Index",ReadAllNotes().allNotes);
+            ReadAllNotes(); // Update the notes list
+            Notebook filteredNotes = new Notebook{ allNotes = notes};
+
+            for(var i = filteredNotes.allNotes.Count -1 ; i>=0; i--)
+            {
+                var note = filteredNotes.allNotes.Find(fnote => fnote.id == i);
+                if(!string.IsNullOrEmpty(category))
+                    if(DateTime.Compare(from, note.date ) < 0 && DateTime.Compare(note.date, to) <0 && note.category != category)
+                        filteredNotes.allNotes.RemoveAt(note.id);
+            }
+            return View("Index",filteredNotes.allNotes);
+        }
+
 
         private Models.Notebook ReadAllNotes()
         {
@@ -68,10 +87,7 @@ namespace P01.Controllers
             };
             return notebook;
         }
-        private void EditFile(string path)
-        {
-            
-        }
+        
 
 
 
