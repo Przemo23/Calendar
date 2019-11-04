@@ -8,15 +8,18 @@ namespace P01
 {
     public static class NoteReader{
         public static string dirName;
+        public static int noteToDisplayId;
         public static List<Note> notes;
         static NoteReader()
         {
             notes = new List<Note>();
             dirName = Environment.CurrentDirectory+"/Notes";
         }
-        public static void ReadFiles()
+        public static void ReadFiles(int recentFileId)
         {
-            
+            string noteToDisplayTitle = null;
+            if(notes.Count >0)    
+                noteToDisplayTitle = notes.Find(rFile => rFile.id == recentFileId).title;
             notes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
             int fileCounter = 0;
@@ -58,13 +61,19 @@ namespace P01
                 }
                 if(properFormat && lineCounter > 0)
                 {
-                    curNote.id = fileCounter;
                     curNote.title = name.Substring(name.LastIndexOf('/')+1);
+                    
                     fileCounter++;
                     addInDateOrder(curNote);
                 }
                 file.Close();
             }
+            assignNewIds();
+            if(String.IsNullOrEmpty(noteToDisplayTitle))
+                noteToDisplayId = 0;
+            else
+                noteToDisplayId = notes.Find(note => note.title == noteToDisplayTitle).id;
+            
         }
         private static void addInDateOrder(Note curNote)
         {
@@ -73,17 +82,27 @@ namespace P01
                 notes.Add(curNote);
                 return;
             }
-
+            int i = -1;
             foreach(Note note in notes )
             {
+                i++;
                 if(DateTime.Compare(curNote.date,note.date) <= 0)
                 {    
-                    notes.Insert(note.id,curNote);
+                    notes.Insert(i,curNote);
                     return;
                 }
             }
             notes.Add(curNote);
             
+        }
+        private static void assignNewIds()
+        {
+            int i = 0;
+            foreach(Note note in notes)
+            {
+                note.id = i;
+                i++;
+            }
         }
     }
 }

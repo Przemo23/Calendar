@@ -1,9 +1,11 @@
 @{
     String currentDate = DateTime.Now.Year.ToString() + '-' + DateTime.Now.Month.ToString() + '-' + DateTime.Now.Day.ToString();
     String maxDate = "2077-12-13";
-    int numberOfPages = Model.Count/10 + 1;
+    int numberOfPages = Model.allNotes.Count/10 + 1;
+    int currentPage = Model.currentNoteId/10 +1;
+    int displayRange =  currentPage * 10 < Model.allNotes.Count ? displayRange = currentPage *10 : displayRange = Model.allNotes.Count;
 }
-@model List<P01.Models.Note>;
+@model P01.Models.Notebook;
 
  <div class = "well">
             <form asp-action="Filter" asp-controller="Calendar">    
@@ -38,21 +40,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach(var note in Model)
+
+                @for(int i = 10 * (currentPage -1);i < @displayRange ;i++)
                 {
-                <tr>
+                    <tr>
                     @{
+                    Note note = @Model.allNotes.Find(notie => notie.id == i );
                     string printableDate =  note.date.Date.ToString("d");
+
                     }
                     <td>
                         @Html.DisplayFor(modelItem => printableDate) 
                     </td>
                     <td>@Html.DisplayFor(modelItem => note.title)
-                     <a asp-action="Edit" asp-route-id= "@note.id" class="btn btn-default">Edit</a>
-                     <a asp-action="DeleteFile" asp-route-id= "@note.id" class="btn btn-default">Delete</a>
+                     <a asp-action="Edit" asp-route-id= "@i" class="btn btn-default">Edit</a>
+                     <a asp-action="DeleteFile" asp-route-id= "@i" class="btn btn-default">Delete</a>
                     </td>
                 </tr>
-                }
+                }                     
                 </tbody>
             </table>
 
@@ -65,11 +70,11 @@
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <button type = "button" class="btn btn-default">Prev Page</button>
+                    <a asp-controller="Calendar" asp-action="PreviousPage" type = "button" class="btn btn-default">Previous Page</a>
                 </div>
-                <div class ="col-sm-2"> Page: @numberOfPages </div>
+                <div class ="col-sm-2"> Page: @currentPage / @numberOfPages </div>
                 <div class="col-sm-2">
-                    <button type = "button" class="btn btn-default">Next Page</button>
+                    <a asp-controller="Calendar" asp-action="NextPage" type = "button" class="btn btn-default">Next Page</a>
                 </div>
 
         

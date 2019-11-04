@@ -16,9 +16,20 @@ namespace P01.Controllers
 
         public IActionResult Index()
         {            
-            return  View(ReadAllNotes().allNotes);
+            return  View(ReadAllNotes(0));
         }
-      //  [Route("/Calendar/Edit/", Name = "Edit")]
+        public IActionResult NextPage()
+        {
+            if( noteToDisplayId/10 * 10 + 10 < notes.Count )
+                noteToDisplayId = noteToDisplayId/10 * 10 + 10;
+            return View("Index",ReadAllNotes(noteToDisplayId));
+        }
+        public IActionResult PreviousPage()
+        {
+            if( noteToDisplayId - 10 >= 0)
+                noteToDisplayId = noteToDisplayId - 10;
+            return View("Index",ReadAllNotes(noteToDisplayId));
+        }
         public IActionResult Edit(int id)
         {
             return  View(notes.Find(note => note.id == id));
@@ -39,7 +50,14 @@ namespace P01.Controllers
         
         public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category)
         {
+            if(System.IO.File.Exists(Path.Combine(dirName,title)))
+            {
+                notes.Find(note => note.id == id).title = "A file with such a name already exists";
+                return View("Edit",notes.Find(note => note.id == id));
+            }
             Note modifiedNote = notes.Find(note => note.id == id);
+            modifiedNote.title = title;
+            modifiedNote.date = date;
             string path = Path.Combine(dirName,modifiedNote.title);
             text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (System.IO.File.Exists(path))
@@ -48,7 +66,7 @@ namespace P01.Controllers
                 System.IO.File.WriteAllText(Path.Combine(dirName,title),text);
              
             
-            return View("Index",ReadAllNotes().allNotes);
+            return View("Index",ReadAllNotes(id));
         }
 
         public IActionResult DeleteFile(int id)
@@ -56,15 +74,15 @@ namespace P01.Controllers
             Note modifiedNote = notes.Find(note => note.id == id);
             string path = Path.Combine(dirName,modifiedNote.title);
             System.IO.File.Delete(path);
-            return View("Index",ReadAllNotes().allNotes);
+            return View("Index",ReadAllNotes(id - 1));
         }
  
         public IActionResult Filter(DateTime from, DateTime to, string category)
         {
             
             if(DateTime.Compare(from,to) > 0)
-                return View("Index",ReadAllNotes().allNotes);
-            ReadAllNotes(); // Update the notes list
+                return View("Index",ReadAllNotes(0));
+            ReadAllNotes(0); // Update the notes list
             Notebook filteredNotes = new Notebook{ allNotes = notes};
 
             for(var i = filteredNotes.allNotes.Count -1 ; i>=0; i--)
@@ -74,19 +92,21 @@ namespace P01.Controllers
                     if(DateTime.Compare(from, note.date ) < 0 && DateTime.Compare(note.date, to) <0 && note.category != category)
                         filteredNotes.allNotes.RemoveAt(note.id);
             }
-            return View("Index",filteredNotes.allNotes);
+            return View("Index",filteredNotes);
         }
 
 
-        private Models.Notebook ReadAllNotes()
+        private Models.Notebook ReadAllNotes(int recentNoteId)
         {
-            ReadFiles();
+            ReadFiles(recentNoteId);
             var notebook = new Models.Notebook
             {
-                allNotes = notes
+                allNotes = notes,
+                currentNoteId = noteToDisplayId
             };
             return notebook;
         }
+        
         
 
 
