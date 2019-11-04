@@ -50,6 +50,11 @@ namespace P01.Controllers
         
         public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category)
         {
+            if(System.IO.File.Exists(Path.Combine(dirName,title)))
+            {
+                notes.Find(note => note.id == id).title = "A file with such a name already exists";
+                return View("Edit",notes.Find(note => note.id == id));
+            }
             Note modifiedNote = notes.Find(note => note.id == id);
             modifiedNote.title = title;
             modifiedNote.date = date;
@@ -101,6 +106,7 @@ namespace P01.Controllers
             };
             return notebook;
         }
+        
         
 
 
