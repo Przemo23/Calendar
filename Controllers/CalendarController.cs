@@ -74,7 +74,8 @@ namespace P01.Controllers
             Note modifiedNote = notes.Find(note => note.id == id);
             string path = Path.Combine(dirName,modifiedNote.title);
             System.IO.File.Delete(path);
-            return View("Index",ReadAllNotes(id - 1));
+            int indexToPass = id == 0 ? 1 : id - 1;
+            return View("Index",ReadAllNotes(indexToPass));
         }
  
         public IActionResult Filter(DateTime from, DateTime to, string category)
