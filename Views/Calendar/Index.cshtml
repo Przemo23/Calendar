@@ -1,5 +1,5 @@
 @{
-    String currentDate = DateTime.Now.Year.ToString() + '-' + DateTime.Now.Month.ToString() + '-' + DateTime.Now.Day.ToString();
+    String currentDate = DateTime.Now.Year.ToString() + '-' + DateTime.Now.Month.ToString("D2") + '-' + DateTime.Now.Day.ToString("D2");
     String maxDate = "2077-12-13";
     int numberOfPages = (Model.allNotes.Count - 1)/10 + 1;
     int currentPage = Model.currentNoteId /10 +1;
@@ -47,7 +47,7 @@
                 {
                     <tr>
                     @{
-                    Note note = @Model.allNotes.Find(notie => notie.id == i );
+                    Note note = @Model.allNotes.ElementAt(i);
                     string printableDate =  note.date.Date.ToString("d");
 
                     }

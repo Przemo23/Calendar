@@ -1,6 +1,6 @@
 @model P01.Models.Note
 @{
-    String printableDate = @Model.date.Year.ToString() + '-'+@Model.date.Month.ToString() + '-' + @Model.date.Day.ToString();
+    String printableDate = @Model.date.Year.ToString() + '-'+@Model.date.Month.ToString("D2") + '-' + @Model.date.Day.ToString("D2");
 }
 <div class = "well">
 
@@ -22,7 +22,6 @@
         <div class = "row">
             <div class = "col-sm-3 col-sm-offset-4"> Category:
                 <input type = "text" name = "category" value ="@Model.category">
-                <button type="button" class="btn btn-default">Add New</button>
             </div>
             <div class = "col-sm-3"> Date:
                 <input type = "date" name = "date" value = @printableDate>

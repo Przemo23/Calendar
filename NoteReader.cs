@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using P01.Models;
 
@@ -19,54 +20,14 @@ namespace P01
         {
             string noteToDisplayTitle = null;
             if(notes.Count >0)    
-                noteToDisplayTitle = notes.Find(rFile => rFile.id == recentFileId).title;
+                noteToDisplayTitle = notes.ElementAt(recentFileId).title;
             notes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
             int fileCounter = 0;
             foreach(string name in fileNames)
             {
-                
-                StreamReader file = new StreamReader(name);
-                string line;
-                int lineCounter = 0;
-                Note curNote = new Note();
-                bool properFormat = true;
-                while((line = file.ReadLine())!= null && properFormat)
-                {
-                    if(lineCounter == 0)
-                    {
-                        
-                        if(line.Substring(0,9)!="category:")
-                            properFormat = false;
-                        else
-                            curNote.category = line.Substring(9);  
-                    }
-                    else if(lineCounter ==1)
-                    {
-                        if(line.Substring(0,5)!="date:")
-                            properFormat = false;
-                        else
-                        {
-                            int year = Int32.Parse(line.Substring(11));
-                            int month = Int32.Parse(line.Substring(5,2));
-                            int day = Int32.Parse(line.Substring(8,2));
-                            curNote.date = new DateTime(year,month,day); 
-                        }
-                    }
-                    else
-                    {
-                        curNote.text += line;
-                    }
-                    lineCounter++;
-                }
-                if(properFormat && lineCounter > 0)
-                {
-                    curNote.title = name.Substring(name.LastIndexOf('/')+1);
-                    
-                    fileCounter++;
-                    addInDateOrder(curNote);
-                }
-                file.Close();
+                ReadFile(name);
+                fileCounter++;
             }
             assignNewIds();
             if(String.IsNullOrEmpty(noteToDisplayTitle))
@@ -74,6 +35,49 @@ namespace P01
             else
                 noteToDisplayId = notes.Find(note => note.title == noteToDisplayTitle).id;
             
+        }
+        private static void ReadFile(string name)
+        {
+            StreamReader file = new StreamReader(name);
+            string line;
+            int lineCounter = 0;
+            Note curNote = new Note();
+            bool properFormat = true;
+            while((line = file.ReadLine())!= null && properFormat)
+            {
+                if(lineCounter == 0) // decoding line by line
+                {
+                    
+                    if(line.Substring(0,9)!="category:")
+                        properFormat = false;
+                    else
+                        curNote.category = line.Substring(9);  
+                }
+                else if(lineCounter ==1)
+                {
+                    if(line.Substring(0,5)!="date:")
+                        properFormat = false;
+                    else
+                        curNote.date = parseToDate(line);
+                      
+                }
+                else
+                    curNote.text += line;                
+                lineCounter++;
+            }
+            if(properFormat && lineCounter > 0)
+            {
+                curNote.title = name.Substring(name.LastIndexOf('/')+1);
+                addInDateOrder(curNote);
+            }
+            file.Close();
+        }
+        private static DateTime parseToDate(string line)
+        {
+            int year = Int32.Parse(line.Substring(11));
+            int month = Int32.Parse(line.Substring(5,2));
+            int day = Int32.Parse(line.Substring(8,2));
+            return new DateTime(year,month,day); 
         }
         private static void addInDateOrder(Note curNote)
         {
