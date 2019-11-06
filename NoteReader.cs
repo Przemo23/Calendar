@@ -3,25 +3,25 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using P01.Models;
+using static P01.Models.Notebook;
 
 namespace P01
 
 {
     public static class NoteReader{
         public static string dirName;
-        public static int noteToDisplayId;
-        public static List<Note> notes;
+        
         static NoteReader()
         {
-            notes = new List<Note>();
+            allNotes = new List<Note>();
             dirName = Environment.CurrentDirectory+"/Notes";
         }
         public static void ReadFiles(int recentFileId)
         {
             string noteToDisplayTitle = null;
-            if(notes.Count >0)    
-                noteToDisplayTitle = notes.ElementAt(recentFileId).title;
-            notes.Clear();
+            if(allNotes.Count >0)    
+                noteToDisplayTitle = allNotes.ElementAt(recentFileId).title;
+            allNotes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
             foreach(string name in fileNames)
             {
@@ -29,9 +29,9 @@ namespace P01
             }
             assignNewIds();
             if(String.IsNullOrEmpty(noteToDisplayTitle))
-                noteToDisplayId = 0;
+                currentNoteId = 0;
             else
-                noteToDisplayId = notes.Find(note => note.title == noteToDisplayTitle).id;
+                currentNoteId = allNotes.Find(note => note.title == noteToDisplayTitle).id;
             
         }
         private static void ReadFile(string name)
@@ -95,28 +95,28 @@ namespace P01
         }
         private static void addInDateOrder(Note curNote)
         {
-            if(notes.Count == 0)
+            if(allNotes.Count == 0)
             {
-                notes.Add(curNote);
+                allNotes.Add(curNote);
                 return;
             }
             int i = -1;
-            foreach(Note note in notes )
+            foreach(Note note in allNotes )
             {
                 i++;
                 if(DateTime.Compare(curNote.date,note.date) <= 0)
                 {    
-                    notes.Insert(i,curNote);
+                    allNotes.Insert(i,curNote);
                     return;
                 }
             }
-            notes.Add(curNote);
+            allNotes.Add(curNote);
             
         }
         private static void assignNewIds()
         {
             int i = 0;
-            foreach(Note note in notes)
+            foreach(Note note in allNotes)
             {
                 note.id = i;
                 i++;

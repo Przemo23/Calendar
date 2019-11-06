@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using P01.Models;
+using static P01.Models.Notebook;
+using static P01.NoteReader;
+using static P01.Controllers.CalendarController;
+
 
 namespace P01
 {
@@ -15,6 +19,7 @@ namespace P01
     {
         public static void Main(string[] args)
         {
+            ReadAllNotes(0);
             BuildWebHost(args).Run();
         }
 

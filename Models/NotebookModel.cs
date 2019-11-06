@@ -5,10 +5,23 @@ using System.Threading.Tasks;
 
 namespace P01.Models
 {
-    public class Notebook
+    public static class Notebook
     {
-        public List<Note> allNotes {get;set;}
-        public int currentNoteId {get;set;}
+        static Notebook()
+        {
+            displayedNotes = allNotes = new List<Note>();
+            currentNoteId = 0;
+
+        }
+        public static List<Note> displayedNotes {get;set;}
+        public static int currentNoteId {get;set;}
+        public static List<Note> allNotes {get;set;}
+        public static DateTime fromFilterDate {get;set;}
+        public static DateTime toFilterDate {get;set;}
+        public static string filteredCategory {get;set;}
+
+
+        
     }
 }
 

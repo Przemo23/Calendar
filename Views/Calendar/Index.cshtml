@@ -1,30 +1,32 @@
 @{
-    String currentDate = DateTime.Now.Year.ToString() + '-' + DateTime.Now.Month.ToString("D2") + '-' + DateTime.Now.Day.ToString("D2");
-    String maxDate = "2077-12-13";
-    int numberOfPages = (Model.allNotes.Count - 1)/10 + 1;
-    int currentPage = Model.currentNoteId /10 +1;
-    int displayRange =  currentPage * 10 < Model.allNotes.Count ? displayRange = currentPage *10 : displayRange = Model.allNotes.Count;
+    string fromDate = Notebook.fromFilterDate.Year.ToString() + '-' + Notebook.fromFilterDate.Month.ToString("D2") + '-' + Notebook.fromFilterDate.Day.ToString("D2");
+    string toDate = Notebook.toFilterDate.Year.ToString() + '-' + Notebook.toFilterDate.Month.ToString("D2") + '-' + Notebook.toFilterDate.Day.ToString("D2");
+    string filterCategory = Notebook.filteredCategory;
+    int numberOfPages = (Notebook.displayedNotes.Count - 1)/10 + 1;
+    int currentPage = Notebook.currentNoteId /10 +1;
+    int displayRange =  currentPage * 10 < Notebook.displayedNotes.Count ? displayRange = currentPage *10 : displayRange = Notebook.displayedNotes.Count;
 }
-@model P01.Models.Notebook;
+@using  P01.Models;
  <div class = "well">
             <form asp-action="Filter" asp-controller="Calendar">    
                 <div class = "row">
                     <div class="col-sm-3">
                         From 
-                        <input type="date" name = "from" value = @currentDate> 
+                        <input type="date" name = "from" value = @fromDate> 
                     </div>
                     <div class="col-sm-3">
                         To
-                        <input type="date" name = "to" value = @maxDate> 
+                        <input type="date" name = "to" value = @toDate> 
                     </div>
                     <div class="col-sm-3">
                         Category
-                        <input type="text" name = "category">
+                        <input type="text" name = "category" value = @filterCategory>
                     </div>
                     <div class="col-sm-3">
                         <div class = "btn-group">
                             <input type="submit" value="Filter">
                             <input type="reset" value = "Clear">
+                            <a asp-action="DeleteFilter" asp-controller="Calendar" class="btn btn-default">Delete Filter</a>
                         </div>
                     </div>
 
@@ -46,8 +48,9 @@
                 {
                     <tr>
                     @{
-                    Note note = @Model.allNotes.ElementAt(i);
+                    Note note = Notebook.displayedNotes.ElementAt(i);
                     string printableDate =  note.date.Date.ToString("d");
+                    int index = note.id;
 
                     }
                     <td>
@@ -55,8 +58,8 @@
                     </td>
                     <td>@Html.DisplayFor(modelItem => note.title)</td>
                     <td align="right">
-                     <a asp-action="Edit" asp-route-id= "@i" class="btn btn-default">Edit</a>
-                     <a asp-action="DeleteFile" asp-route-id= "@i" class="btn btn-default">Delete</a>
+                     <a asp-action="Edit" asp-route-id= "@index" class="btn btn-default">Edit</a>
+                     <a asp-action="DeleteFile" asp-route-id= "@index" class="btn btn-default">Delete</a>
                     </td>
                 </tr>
                 }                     
