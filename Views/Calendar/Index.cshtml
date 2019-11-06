@@ -6,7 +6,6 @@
     int displayRange =  currentPage * 10 < Model.allNotes.Count ? displayRange = currentPage *10 : displayRange = Model.allNotes.Count;
 }
 @model P01.Models.Notebook;
-
  <div class = "well">
             <form asp-action="Filter" asp-controller="Calendar">    
                 <div class = "row">

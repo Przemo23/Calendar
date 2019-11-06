@@ -19,6 +19,7 @@ namespace P01.Controllers
         {
             if( noteToDisplayId/10 * 10 + 10 < notes.Count )
                 noteToDisplayId = noteToDisplayId/10 * 10 + 10;
+
             return View("Index",ReadAllNotes(noteToDisplayId));
         }
         public IActionResult PreviousPage()
@@ -38,11 +39,12 @@ namespace P01.Controllers
                                     title = "New",
                                     text = "Your text",
                                     category = "Category",
-                                    date = DateTime.Now,                                
+                                    date = DateTime.Now,
+                                    isMarkdown = false                                
                                     });
             return  View("Edit",notes.Find(note => note.id == notes.Count -1));
         }        
-        public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category)
+        public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category,bool markdown)
         {
             if(!IsNameUnique(id,title))
             {
@@ -50,7 +52,8 @@ namespace P01.Controllers
                 return View("Edit",notes.Find(note => note.id == id));
             }
             Note modifiedNote = notes.Find(note => note.id == id);
-            modifiedNote.date = date;           
+            modifiedNote.date = date;
+            modifiedNote.isMarkdown = markdown;           
             text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (IsEditing()) // Editing note
             {
@@ -63,7 +66,9 @@ namespace P01.Controllers
             {
                 modifiedNote.title = title;
                 System.IO.File.WriteAllText(Path.Combine(dirName,title),text);        
-            }            
+            }
+            if(modifiedNote.isMarkdown)
+                modifiedNote.title += ".md";
             return View("Index",ReadAllNotes(id));
         }
         public IActionResult DeleteFile(int id)

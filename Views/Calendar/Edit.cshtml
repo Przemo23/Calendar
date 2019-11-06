@@ -2,20 +2,20 @@
 @{
     String printableDate = @Model.date.Year.ToString() + '-'+@Model.date.Month.ToString("D2") + '-' + @Model.date.Day.ToString("D2");
 }
-<div class = "well">
 
+<div class = "well">
     <form asp-action="SubmitChanges" asp-controller="Calendar" asp-route-id=@Model.id id ="submitaction">
         <div class = "row">
             <div class ="col-sm-1"> Title of the note </div>
             <div class ="col-sm-9">
                 
-                    <input type = "text" style = "width:500px" name = "title" value = "@Model.title">
+                <input type = "text" style = "width:500px" name = "title" value = "@Model.title">
                 
             </div>
             <div class ="col-sm-2">
-                
-                 <!--   <input type="checkbox" name="markdown" value="markdown"> Markdown-->
-                
+                <div class = "checkbox">
+                <input type = "checkbox" name = "markdown"  > Markdown
+                </div>
             </div>
         </div>
         <textarea name="text" style="width:1000px; height:400px;" form = "submitaction"> @Model.text</textarea>  
@@ -34,9 +34,8 @@
     </form>
     
     <a asp-controller="Calendar" asp-action="Index" type = "button" class="btn btn-default">Cancel</a>
-
+</div>
     
         
 
 
-</div>

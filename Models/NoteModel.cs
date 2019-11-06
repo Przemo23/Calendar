@@ -12,6 +12,7 @@ namespace P01.Models
         public String category {get;set;}
         public int id{get;set;}
         public String text {get;set;}
+        public bool isMarkdown {get;set;}
         
     }
 }

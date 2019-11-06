@@ -23,11 +23,9 @@ namespace P01
                 noteToDisplayTitle = notes.ElementAt(recentFileId).title;
             notes.Clear();
             string[] fileNames = Directory.GetFiles(dirName);
-            int fileCounter = 0;
             foreach(string name in fileNames)
             {
                 ReadFile(name);
-                fileCounter++;
             }
             assignNewIds();
             if(String.IsNullOrEmpty(noteToDisplayTitle))
@@ -67,11 +65,27 @@ namespace P01
             }
             if(properFormat && lineCounter > 0)
             {
-                curNote.title = name.Substring(name.LastIndexOf('/')+1);
+                curNote = MdCheck(name.Substring(name.LastIndexOf('/')+1),curNote);
                 addInDateOrder(curNote);
             }
             file.Close();
+            
         }
+        private static Note MdCheck(string name, Note note)
+            {
+                if(name.EndsWith(".md") )
+                {
+                    note.title = name.Remove(name.Length-3,3);
+                    note.isMarkdown = true;
+                }
+                else
+                {    
+                    note.isMarkdown = false;
+                    note.title = name;
+                }
+                return note;
+            }
+        
         private static DateTime parseToDate(string line)
         {
             int year = Int32.Parse(line.Substring(11));
