@@ -20,7 +20,19 @@
                     </div>
                     <div class="col-sm-3">
                         Category
-                        <input type="text" name = "category" value = @filterCategory>
+                       <!-- <input type="text" name = "category" value = @filterCategory>-->
+                        <select name = "category">
+                            <option value = "@filterCategory" selected>@filterCategory</option>
+                            @for(int i = 0;i < Notebook.categoriesList.Count ;i++)
+                            {
+                                @if(Notebook.categoriesList.ElementAt(i)!= filterCategory)
+                                {
+                                <option value = "@Notebook.categoriesList.ElementAt(i)">@Notebook.categoriesList.ElementAt(i) </option>
+                                }
+                            }
+                           
+                        </select>
+
                     </div>
                     <div class="col-sm-3">
                         <div class = "btn-group">

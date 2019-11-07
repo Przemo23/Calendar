@@ -9,7 +9,9 @@ namespace P01.Models
     {
         static Notebook()
         {
-            displayedNotes = allNotes = new List<Note>();
+            displayedNotes =  new List<Note>();
+            allNotes = new List<Note>();
+            categoriesList = new List<String>();
             currentNoteId = 0;
 
         }
@@ -19,6 +21,7 @@ namespace P01.Models
         public static DateTime fromFilterDate {get;set;}
         public static DateTime toFilterDate {get;set;}
         public static string filteredCategory {get;set;}
+        public static List<String> categoriesList {get;set;}
 
 
         

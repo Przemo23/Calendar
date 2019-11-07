@@ -42,7 +42,7 @@ namespace P01.Controllers
                                     text = "Your text",
                                     category = "Category",
                                     date = DateTime.Now,
-                                    isMarkdown = false                                
+                                    isMarkdown = true                               
                                     });
             return  View("Edit",allNotes.Find(note => note.id == allNotes.Count -1));
         }        
@@ -55,11 +55,13 @@ namespace P01.Controllers
             }
             Note modifiedNote = allNotes.Find(note => note.id == id);
             modifiedNote.date = date;
-            modifiedNote.isMarkdown = markdown;           
+//modifiedNote.isMarkdown = markdown;           
             text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (IsEditing()) // Editing note
             {
                 string path = Path.Combine(dirName,modifiedNote.title);
+                if(modifiedNote.isMarkdown)
+                    path += ".md";
                 System.IO.File.WriteAllText(path,text);
                 System.IO.File.Move(path, Path.Combine(dirName,title));
                 modifiedNote.title = title;
@@ -67,10 +69,11 @@ namespace P01.Controllers
             else //creating new
             {
                 modifiedNote.title = title;
+                if(modifiedNote.isMarkdown)
+                    title += ".md";
                 System.IO.File.WriteAllText(Path.Combine(dirName,title),text);        
             }
-            if(modifiedNote.isMarkdown)
-                modifiedNote.title += ".md";
+            
             ReadAllNotes(id);
             return View("Index");
         }
@@ -82,6 +85,12 @@ namespace P01.Controllers
             allNotes.RemoveAt(modifiedNote.id);
             displayedNotes.Remove(displayedNotes.Find(note=>note.id == id));
             return View("Index");
+        }
+        public IActionResult AddCategory(int id, string category)
+        {
+            AddCategory(category);
+            allNotes.Find(note => note.id == id).category = category;
+            return  View("Edit",allNotes.Find(note => note.id == id));
         }
         public IActionResult DeleteFilter()
         {
@@ -95,7 +104,7 @@ namespace P01.Controllers
             if(DateTime.Compare(from,to) > 0)
                 return View("Index");
             ReadAllNotes(0); // Update the notes list
-            displayedNotes = allNotes;
+            CopyToDisplayNotes();
             fromFilterDate = from;
             toFilterDate = to;
             filteredCategory = category;
@@ -123,13 +132,25 @@ namespace P01.Controllers
         public static void ReadAllNotes(int recentNoteId)
         {
             ReadFiles(recentNoteId);
-            displayedNotes = allNotes;
+            CopyToDisplayNotes();
             fromFilterDate = DateTime.Now;
             toFilterDate = DateTime.Parse("12/12/2030");
             filteredCategory = "";
             
             
             
+        }
+        private static void AddCategory(string category)
+        {
+            AddCategoryToList(category);
+        }
+        private static void CopyToDisplayNotes()
+        {
+            displayedNotes.Clear();
+            foreach(Note note in allNotes)
+            {
+                displayedNotes.Add(note);
+            }
         }
         
         

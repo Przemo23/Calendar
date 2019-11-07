@@ -1,8 +1,9 @@
 @model P01.Models.Note
 @{
     String printableDate = @Model.date.Year.ToString() + '-'+@Model.date.Month.ToString("D2") + '-' + @Model.date.Day.ToString("D2");
+    
 }
-
+<form asp-action="AddCategory" asp-controller="Calendar" asp-route-id=@Model.id id ="AddCategory"></form>
 <div class = "well">
     <form asp-action="SubmitChanges" asp-controller="Calendar" asp-route-id=@Model.id id ="submitaction">
         <div class = "row">
@@ -14,14 +15,28 @@
             </div>
             <div class ="col-sm-2">
                 <div class = "checkbox">
-                <input type = "checkbox" name = "markdown"  > Markdown
+               <!-- <input type = "checkbox" name = "markdown" checked > Markdown -->
                 </div>
             </div>
         </div>
         <textarea name="text" style="width:1000px; height:400px;" form = "submitaction"> @Model.text</textarea>  
         <div class = "row">
-            <div class = "col-sm-3 col-sm-offset-4"> Category:
-                <input type = "text" name = "category" value ="@Model.category">
+            <div class = "col-sm-4">
+                <input type = "text" form = "AddCategory" name ="category">
+                <input type="submit" value="Add Category" form = "AddCategory">
+            </div>
+            <div class = "col-sm-3 "> Category:
+                 <select name = "category">
+                            <option value = "@Model.category" selected>@Model.category</option>
+                            @for(int i = 0;i < Notebook.categoriesList.Count ;i++)
+                            {
+                                @if(Notebook.categoriesList.ElementAt(i)!= @Model.category)
+                                {
+                                <option value = "@Notebook.categoriesList.ElementAt(i)">@Notebook.categoriesList.ElementAt(i) </option>
+                                }
+                            }
+                           
+                </select>
             </div>
             <div class = "col-sm-3"> Date:
                 <input type = "date" name = "date" value = @printableDate>

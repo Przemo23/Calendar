@@ -31,7 +31,7 @@ namespace P01
             if(String.IsNullOrEmpty(noteToDisplayTitle))
                 currentNoteId = 0;
             else
-                currentNoteId = allNotes.Find(note => note.title == noteToDisplayTitle).id;
+                currentNoteId = allNotes.Find(note => note.title == noteToDisplayTitle ).id;
             
         }
         private static void ReadFile(string name)
@@ -63,6 +63,7 @@ namespace P01
                     curNote.text += line;                
                 lineCounter++;
             }
+            AddCategoryToList(curNote.category);
             if(properFormat && lineCounter > 0)
             {
                 curNote = MdCheck(name.Substring(name.LastIndexOf('/')+1),curNote);
@@ -70,6 +71,11 @@ namespace P01
             }
             file.Close();
             
+        }
+        public static void AddCategoryToList(string category)
+        {
+            if(!categoriesList.Contains(category))
+                categoriesList.Add(category);
         }
         private static Note MdCheck(string name, Note note)
             {
