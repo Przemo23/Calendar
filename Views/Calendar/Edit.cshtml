@@ -15,11 +15,13 @@
             </div>
             <div class ="col-sm-2">
                 <div class = "checkbox">
-                    @if(@Model.isMarkdown){
-                    <input type = "checkbox" name = "markdown" checked >  
+                    @if(@Model.isMarkdown)
+                    {
+                        <input type = "checkbox" name = "markdown" value = "true" checked >  
                     }
-                    else{
-                        <input type = "checkbox" name = "markdown" > 
+                    else
+                    {
+                        <input type = "checkbox" name = "markdown"  value = "true" > 
                     }
                     Markdown
                 </div>

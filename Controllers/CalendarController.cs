@@ -60,10 +60,16 @@ namespace P01.Controllers
             if (IsEditing()) // Editing note
             {
                 string path = Path.Combine(dirName,modifiedNote.title);
-                if(modifiedNote.isMarkdown)
+                if(modifiedNote.isMarkdown){
                     path += ".md";
+                }
                 System.IO.File.WriteAllText(path,text);
-                System.IO.File.Move(path, Path.Combine(dirName,title));
+                if(modifiedNote.isMarkdown){
+                    System.IO.File.Move(path, Path.Combine(dirName,title+".md"));
+                }
+                else
+                    System.IO.File.Move(path, Path.Combine(dirName,title));
+                
                 modifiedNote.title = title;
             }
             else //creating new
@@ -81,9 +87,12 @@ namespace P01.Controllers
         {
             Note modifiedNote = allNotes.Find(note => note.id == id);
             string path = Path.Combine(dirName,modifiedNote.title);
+            if(modifiedNote.isMarkdown)
+                path += ".md";
             System.IO.File.Delete(path);
             allNotes.RemoveAt(modifiedNote.id);
             displayedNotes.Remove(displayedNotes.Find(note=>note.id == id));
+            ReEnumerate();
             return View("Index");
         }
         public IActionResult AddCategory(int id, string category)
@@ -121,8 +130,14 @@ namespace P01.Controllers
         private bool IsNameUnique(int id, string title)
         {
             if(allNotes.Exists(note => note.title == title))
+            {   
                 if(allNotes.Find(note => note.id == id).title != title)
+                {
                     return false;
+                }
+                if(allNotes.Find(note => note.id == id).title != title && allNotes.Find(note => note.id == id).isMarkdown)
+                    return false;
+            }
             return true;
         }
         private bool IsEditing()
@@ -150,6 +165,21 @@ namespace P01.Controllers
             foreach(Note note in allNotes)
             {
                 displayedNotes.Add(note);
+            }
+        }
+        private static void ReEnumerate()
+        {
+            int i = 0;
+            foreach(Note note in allNotes)
+            {
+                note.id = i;
+                i++;
+            }
+            i = 0;
+            foreach(Note note in displayedNotes)
+            {
+                note.id = i;
+                i++;
             }
         }
         
