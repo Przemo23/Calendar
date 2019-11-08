@@ -42,7 +42,7 @@ namespace P01.Controllers
                                     text = "Your text",
                                     category = "Category",
                                     date = DateTime.Now,
-                                    isMarkdown = true                               
+                                    isMarkdown = false                               
                                     });
             return  View("Edit",allNotes.Find(note => note.id == allNotes.Count -1));
         }        
@@ -55,7 +55,7 @@ namespace P01.Controllers
             }
             Note modifiedNote = allNotes.Find(note => note.id == id);
             modifiedNote.date = date;
-//modifiedNote.isMarkdown = markdown;           
+            modifiedNote.isMarkdown = markdown;           
             text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (IsEditing()) // Editing note
             {
