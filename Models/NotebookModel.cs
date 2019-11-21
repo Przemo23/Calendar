@@ -13,7 +13,6 @@ namespace P01.Models
             allNotes = new List<Note>();
             categoriesList = new List<String>();
             currentNoteId = 0;
-
         }
         public static List<Note> displayedNotes {get;set;}
         public static int currentNoteId {get;set;}

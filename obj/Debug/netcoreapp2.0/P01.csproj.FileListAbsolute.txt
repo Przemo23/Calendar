@@ -18,3 +18,13 @@
 /home/users/pbedelek/Calendar/obj/Debug/netcoreapp2.0/P01.AssemblyInfo.cs
 /home/users/pbedelek/Calendar/obj/Debug/netcoreapp2.0/P01.dll
 /home/users/pbedelek/Calendar/obj/Debug/netcoreapp2.0/P01.pdb
+/home/przemek/Calendar/bin/Debug/netcoreapp2.0/P01.deps.json
+/home/przemek/Calendar/bin/Debug/netcoreapp2.0/P01.runtimeconfig.json
+/home/przemek/Calendar/bin/Debug/netcoreapp2.0/P01.runtimeconfig.dev.json
+/home/przemek/Calendar/bin/Debug/netcoreapp2.0/P01.dll
+/home/przemek/Calendar/bin/Debug/netcoreapp2.0/P01.pdb
+/home/przemek/Calendar/obj/Debug/netcoreapp2.0/P01.csproj.CoreCompileInputs.cache
+/home/przemek/Calendar/obj/Debug/netcoreapp2.0/P01.AssemblyInfoInputs.cache
+/home/przemek/Calendar/obj/Debug/netcoreapp2.0/P01.AssemblyInfo.cs
+/home/przemek/Calendar/obj/Debug/netcoreapp2.0/P01.dll
+/home/przemek/Calendar/obj/Debug/netcoreapp2.0/P01.pdb

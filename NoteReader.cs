@@ -39,7 +39,7 @@ namespace P01
             StreamReader file = new StreamReader(name);
             string line;
             int lineCounter = 0;
-            Note curNote = new Note();
+            Note curNote = new Note(){noteCategories = new List<string>()};
             bool properFormat = true;
             while((line = file.ReadLine())!= null && properFormat)
             {
@@ -49,7 +49,15 @@ namespace P01
                     if(line.Substring(0,9)!="category:")
                         properFormat = false;
                     else
-                        curNote.category = line.Substring(9);  
+                    {
+                        line = line.Substring(9);
+                        String[] readCategories = line.Split(';');
+                        foreach(String cat in readCategories)
+                        {
+                            AddCategoryToList(cat);
+                            curNote.noteCategories.Add(cat);
+                        }
+                    }  
                 }
                 else if(lineCounter ==1)
                 {
@@ -63,7 +71,6 @@ namespace P01
                     curNote.text += line;                
                 lineCounter++;
             }
-            AddCategoryToList(curNote.category);
             if(properFormat && lineCounter > 0)
             {
                 curNote = MdCheck(name.Substring(name.LastIndexOf('/')+1),curNote);

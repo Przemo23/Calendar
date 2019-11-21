@@ -12537,23 +12537,23 @@
     ]
   },
   "packageFolders": {
-    "/home/users/pbedelek/.nuget/packages/": {},
+    "/home/przemek/.nuget/packages/": {},
     "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/users/pbedelek/Calendar/P01.csproj",
+      "projectUniqueName": "/home/przemek/Calendar/P01.csproj",
       "projectName": "P01",
-      "projectPath": "/home/users/pbedelek/Calendar/P01.csproj",
-      "packagesPath": "/home/users/pbedelek/.nuget/packages/",
-      "outputPath": "/home/users/pbedelek/Calendar/obj/",
+      "projectPath": "/home/przemek/Calendar/P01.csproj",
+      "packagesPath": "/home/przemek/.nuget/packages/",
+      "outputPath": "/home/przemek/Calendar/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/home/users/pbedelek/.nuget/NuGet/NuGet.Config"
+        "/home/przemek/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"

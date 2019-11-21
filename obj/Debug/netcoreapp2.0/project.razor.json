@@ -1,5 +1,5 @@
 {
-  "FilePath": "/home/users/pbedelek/Calendar/P01.csproj",
+  "FilePath": "/home/przemek/Calendar/P01.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-2.0",
     "LanguageVersion": "2.0",
@@ -2740,7 +2740,7 @@
         }
       }
     ],
-    "CSharpLanguageVersion": 800
+    "CSharpLanguageVersion": 703
   },
   "RootNamespace": null,
   "Documents": [],

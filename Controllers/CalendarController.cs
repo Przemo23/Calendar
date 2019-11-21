@@ -40,13 +40,13 @@ namespace P01.Controllers
                                     id = allNotes.Count,
                                     title = "New",
                                     text = "Your text",
-                                    category = "Category",
+                                    noteCategories = new List<string>(),
                                     date = DateTime.Now,
                                     isMarkdown = false                               
                                     });
             return  View("Edit",allNotes.Find(note => note.id == allNotes.Count -1));
         }        
-        public IActionResult SubmitChanges(int id, String title,string text,DateTime date,string category,bool markdown)
+        public IActionResult SubmitChanges(int id, string title,string text,DateTime date,bool markdown)
         {
             if(!IsNameUnique(id,title))
             {
@@ -55,21 +55,21 @@ namespace P01.Controllers
             }
             Note modifiedNote = allNotes.Find(note => note.id == id);
             modifiedNote.date = date;
-            modifiedNote.isMarkdown = markdown;           
-            text = "category:"+category+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
+            modifiedNote.isMarkdown = markdown;
+            
+            
+
+            text = "category:"+WriteCategories(modifiedNote.noteCategories)+'\n'+"date:"+date.ToString("MM/dd/yyyy")+'\n'+text;
             if (IsEditing()) // Editing note
             {
                 string path = Path.Combine(dirName,modifiedNote.title);
-                if(modifiedNote.isMarkdown){
-                    path += ".md";
-                }
+                if(modifiedNote.isMarkdown)
+                    path += ".md";                
                 System.IO.File.WriteAllText(path,text);
-                if(modifiedNote.isMarkdown){
-                    System.IO.File.Move(path, Path.Combine(dirName,title+".md"));
-                }
+                if(modifiedNote.isMarkdown)
+                    System.IO.File.Move(path, Path.Combine(dirName,title+".md"));                
                 else
-                    System.IO.File.Move(path, Path.Combine(dirName,title));
-                
+                    System.IO.File.Move(path, Path.Combine(dirName,title));                
                 modifiedNote.title = title;
             }
             else //creating new
@@ -78,8 +78,7 @@ namespace P01.Controllers
                 if(modifiedNote.isMarkdown)
                     title += ".md";
                 System.IO.File.WriteAllText(Path.Combine(dirName,title),text);        
-            }
-            
+            }            
             ReadAllNotes(id);
             return View("Index");
         }
@@ -95,15 +94,17 @@ namespace P01.Controllers
             ReEnumerate();
             return View("Index");
         }
-        public IActionResult AddCategory(int id, string category)
+        
+        public IActionResult ModifyCategories(int id, string category, string submit)
         {
-            AddCategory(category);
-            allNotes.Find(note => note.id == id).category = category;
+            if(submit == "Add Category")
+                AddCategory(category,id);
+            else if(submit == "Remove Category")
+                RemoveCategory(category,id);
             return  View("Edit",allNotes.Find(note => note.id == id));
         }
         public IActionResult DeleteFilter()
-        {
-            
+        {            
             ReadAllNotes(0);
             return View("Index");
         }
@@ -122,7 +123,7 @@ namespace P01.Controllers
             {
                 var note = displayedNotes.Find(fnote => fnote.id == i);
                 //if(!string.IsNullOrEmpty(category))
-                if(DateTime.Compare(from, note.date ) > 0 || DateTime.Compare(note.date, to) > 0 || (note.category != category && !string.IsNullOrEmpty(category)))
+                if(DateTime.Compare(from, note.date ) > 0 || DateTime.Compare(note.date, to) > 0 || (note.noteCategories.Exists(cat => cat == category) && !string.IsNullOrEmpty(category)))
                     displayedNotes.RemoveAt(note.id);
             }
             return View("Index");
@@ -155,10 +156,21 @@ namespace P01.Controllers
             
             
         }
-        private static void AddCategory(string category)
+        private static void AddCategory(string category, int id)
         {
+            Note note =  allNotes.Find(snote => snote.id == id);
+            if(!note.noteCategories.Contains(category))
+                note.noteCategories.Add(category);
             AddCategoryToList(category);
         }
+        private void RemoveCategory(string category, int id)
+        {
+            Note note =  allNotes.Find(snote => snote.id == id);
+            if(note.noteCategories.Contains(category))
+                note.noteCategories.Remove(category);
+        }
+
+        
         private static void CopyToDisplayNotes()
         {
             displayedNotes.Clear();
@@ -181,6 +193,19 @@ namespace P01.Controllers
                 note.id = i;
                 i++;
             }
+        }
+        private string WriteCategories(List<String> categories)
+        {
+            string toRet = "";
+            foreach(String cat in categories)
+            {
+                if(cat!="")
+                    toRet += cat + ";";
+            }
+            if(!String.IsNullOrEmpty(toRet))
+                toRet = toRet.Substring(0,toRet.Length -1);
+            return toRet;
+
         }
         
         

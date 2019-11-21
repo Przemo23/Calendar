@@ -3,7 +3,7 @@
     String printableDate = @Model.date.Year.ToString() + '-'+@Model.date.Month.ToString("D2") + '-' + @Model.date.Day.ToString("D2");
     
 }
-<form asp-action="AddCategory" asp-controller="Calendar" asp-route-id=@Model.id id ="AddCategory"></form>
+<form asp-action="ModifyCategories" asp-controller="Calendar" asp-route-id=@Model.id id ="CatModify"></form>
 <div class = "well">
     <form asp-action="SubmitChanges" asp-controller="Calendar" asp-route-id=@Model.id id ="submitaction">
         <div class = "row">
@@ -30,18 +30,16 @@
         <textarea name="text" style="width:1000px; height:400px;" form = "submitaction"> @Model.text</textarea>  
         <div class = "row">
             <div class = "col-sm-4">
-                <input type = "text" form = "AddCategory" name ="category">
-                <input type="submit" value="Add Category" form = "AddCategory">
+                <input type = "text" form = "CatModify" name ="category">
+                <input type="submit" name = "submit"value="Add Category" form = "CatModify">
+                <input type = "submit" name = "submit" value = "Remove Category" form = "CatModify">
             </div>
             <div class = "col-sm-3 "> Category:
                  <select name = "category">
-                            <option value = "@Model.category" selected>@Model.category</option>
-                            @for(int i = 0;i < Notebook.categoriesList.Count ;i++)
+                            
+                            @for(int i = 0;i < @Model.noteCategories.Count ;i++)
                             {
-                                @if(Notebook.categoriesList.ElementAt(i)!= @Model.category)
-                                {
-                                <option value = "@Notebook.categoriesList.ElementAt(i)">@Notebook.categoriesList.ElementAt(i) </option>
-                                }
+                                <option value = "@Notebook.categoriesList.ElementAt(i)">@Model.noteCategories.ElementAt(i) </option>                              
                             }
                            
                 </select>
@@ -53,7 +51,7 @@
         </div>
         <hr/>
         <input type="submit" value="Submit">
-        <input type="reset">
+        
     </form>
     
     <a asp-controller="Calendar" asp-action="Index" type = "button" class="btn btn-default">Cancel</a>
